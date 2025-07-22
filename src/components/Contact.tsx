@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   Mail, 
   Phone, 
@@ -13,31 +15,97 @@ import {
   Clock,
   Users
 } from 'lucide-react';
+import { useState } from 'react';
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    company: '',
+    phone: '',
+    challenges: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.company) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-notification', {
+        body: formData
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Your cyber risk assessment request has been submitted. We'll contact you within 24 hours.",
+        variant: "default"
+      });
+
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        company: '',
+        phone: '',
+        challenges: ''
+      });
+
+    } catch (error: any) {
+      console.error('Form submission error:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your request. Please try again or contact us directly.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const contactMethods = [
     {
       icon: <Mail className="h-6 w-6" />,
       title: "Email Us",
-      content: "security@cyberguardpro.com",
+      content: "csvedantgupta@gmail.com",
       subtitle: "Response within 2 hours"
     },
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Call Us",
-      content: "+1 (555) 123-CYBER",
+      content: "+91 70658 74157",
       subtitle: "24/7 Emergency Support"
     },
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "Visit Us",
-      content: "123 Security Blvd, Tech City",
+      content: "Tower 9, 307, Pyramid Urban Homes, Sector 70A, Gurgaon",
       subtitle: "Schedule an appointment"
     },
     {
       icon: <Calendar className="h-6 w-6" />,
       title: "Book Meeting",
-      content: "calendly.com/cyberguard",
+      content: "securityinbuilt.com/calendar",
       subtitle: "Free consultation"
     }
   ];
@@ -81,19 +149,33 @@ const Contact = () => {
                 </p>
               </div>
 
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       First Name *
                     </label>
-                    <Input placeholder="John" className="bg-background" />
+                    <Input 
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      placeholder="John" 
+                      className="bg-background" 
+                      required 
+                    />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Last Name *
                     </label>
-                    <Input placeholder="Doe" className="bg-background" />
+                    <Input 
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      placeholder="Doe" 
+                      className="bg-background" 
+                      required 
+                    />
                   </div>
                 </div>
 
@@ -101,21 +183,42 @@ const Contact = () => {
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Email Address *
                   </label>
-                  <Input type="email" placeholder="john.doe@company.com" className="bg-background" />
+                  <Input 
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="john.doe@company.com" 
+                    className="bg-background" 
+                    required 
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Company Name *
                   </label>
-                  <Input placeholder="Your Company Inc." className="bg-background" />
+                  <Input 
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    placeholder="Your Company Inc." 
+                    className="bg-background" 
+                    required 
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Phone Number
                   </label>
-                  <Input placeholder="+1 (555) 123-4567" className="bg-background" />
+                  <Input 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+91 98765 43210" 
+                    className="bg-background" 
+                  />
                 </div>
 
                 <div>
@@ -123,13 +226,21 @@ const Contact = () => {
                     Current Security Challenges
                   </label>
                   <Textarea 
+                    name="challenges"
+                    value={formData.challenges}
+                    onChange={handleInputChange}
                     placeholder="Tell us about your current security concerns, cloud infrastructure, compliance requirements, etc."
                     className="bg-background min-h-[120px]"
                   />
                 </div>
 
-                <Button size="lg" className="w-full shadow-glow group">
-                  Schedule Free Assessment
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full shadow-glow group" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Schedule Free Assessment'}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
@@ -212,7 +323,7 @@ const Contact = () => {
                 If you're experiencing an active security incident, contact our emergency response team immediately.
               </p>
               <Button variant="destructive" size="sm">
-                Emergency: +1 (555) 911-HACK
+                Emergency: +91 70658 74157
               </Button>
             </Card>
           </div>
