@@ -59,6 +59,33 @@ const Services = () => {
         "SOP and Policy Creation"
       ],
       highlight: "Proactive risk identification"
+    },
+    {
+      icon: <Users className="h-8 w-8" />,
+      title: "Training and Consultation",
+      description: "Expert-led security trainings and consulting to empower your team and strengthen your infrastructure.",
+      image: cyberToolsImage,
+      features: [
+        "Security Trainings",
+        "Security Consulting",
+        "Policies Creation",
+        "Check Points for Secure Infra."
+      ],
+      highlight: "Boost your team's security awareness"
+    },
+    {
+      icon: <Monitor className="h-8 w-8" />,
+      title: "GRC",
+      description: "Governance, Risk, and Compliance services to keep your business secure and audit-ready.",
+      image: itAuditImage,
+      features: [
+        "Keeps businesses compliant",
+        "Improves risk management",
+        "Strengthens governance",
+        "Enhances decision-making",
+        "Prepares for audits"
+      ],
+      highlight: "Stay ahead of regulatory requirements"
     }
   ];
 
@@ -144,7 +171,14 @@ const Services = () => {
                   ))}
                 </ul>
 
-                <Button variant="outline" className="w-full group">
+                <Button variant="outline" className="w-full group"
+                onClick={() => {
+                  const contactSection = document.getElementById("contact");
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: "smooth" })
+                  }
+                }}
+                >
                   Learn More
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>

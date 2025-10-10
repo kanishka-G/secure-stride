@@ -16,8 +16,8 @@ import {
 
 const About = () => {
   const stats = [
-    { icon: <Users className="h-6 w-6" />, label: "Years Experience", value: "16+" },
-    { icon: <Target className="h-6 w-6" />, label: "Companies Protected", value: "500+" },
+    { icon: <Users className="h-6 w-6" />, label: "Industry Experience", value: "16+" },
+    { icon: <Target className="h-6 w-6" />, label: "Companies Protected", value: "Worldwide" },
     { icon: <Award className="h-6 w-6" />, label: "Success Rate", value: "99.9%" },
     { icon: <TrendingUp className="h-6 w-6" />, label: "Threats Blocked", value: "1M+" }
   ];
@@ -63,7 +63,7 @@ const About = () => {
             <span className="text-foreground">Why Choose</span>
             <br />
             <span className="bg-gradient-primary bg-clip-text text-transparent">
-              CyberGuard Pro
+              Security In Built
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

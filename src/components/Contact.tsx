@@ -87,7 +87,7 @@ const Contact = () => {
     {
       icon: <Mail className="h-6 w-6" />,
       title: "Email Us",
-      content: "csvedantgupta@gmail.com",
+      content: "contact@securityinbuilt.com",
       subtitle: "Response within 2 hours"
     },
     {
@@ -99,7 +99,7 @@ const Contact = () => {
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "Visit Us",
-      content: "Tower 9, 307, Pyramid Urban Homes, Sector 70A, Gurgaon",
+      content: "Gurgaon , India",
       subtitle: "Schedule an appointment"
     },
     {

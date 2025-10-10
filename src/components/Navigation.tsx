@@ -21,7 +21,7 @@ const Navigation = () => {
           <div className="flex items-center space-x-2">
             <Shield className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              CyberGuard Pro
+              Security In Built
             </span>
           </div>
 
@@ -36,7 +36,14 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
-            <Button variant="default" className="shadow-glow">
+            <Button variant="default" className="shadow-glow"
+            onClick={() => {
+                const contactSection = document.getElementById("contact");
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
               Get Free Assessment
             </Button>
           </div>
@@ -66,7 +73,14 @@ const Navigation = () => {
                   {item.name}
                 </a>
               ))}
-              <Button variant="default" className="w-full shadow-glow">
+              <Button variant="default" className="w-full shadow-glow"
+              onClick={() => {
+                const contactSection = document.getElementById("contact");
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              >
                 Get Free Assessment
               </Button>
             </div>

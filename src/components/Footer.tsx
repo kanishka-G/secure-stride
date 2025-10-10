@@ -39,7 +39,7 @@ const Footer = () => {
             <div className="flex items-center space-x-2 mb-4">
               <Shield className="h-8 w-8 text-primary" />
               <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                CyberGuard Pro
+                Security In Built
               </span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
@@ -107,7 +107,7 @@ const Footer = () => {
               <h4 className="text-sm font-semibold text-destructive mb-1">Emergency</h4>
               <p className="text-xs text-muted-foreground mb-1">Security Incident?</p>
               <a href="tel:+15559114225" className="text-destructive text-sm font-medium">
-                +1 (555) 911-HACK
+                +91 70658 74157
               </a>
             </div>
           </div>
@@ -120,21 +120,21 @@ const Footer = () => {
               <Mail className="h-5 w-5 text-primary" />
               <div>
                 <p className="text-sm text-muted-foreground">Email</p>
-                <p className="text-foreground">security@cyberguardpro.com</p>
+                <p className="text-foreground">contact@securityinbuilt.com</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <Phone className="h-5 w-5 text-primary" />
               <div>
                 <p className="text-sm text-muted-foreground">Phone</p>
-                <p className="text-foreground">+1 (555) 123-CYBER</p>
+                <p className="text-foreground">+91 70658 74157</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <MapPin className="h-5 w-5 text-primary" />
               <div>
                 <p className="text-sm text-muted-foreground">Address</p>
-                <p className="text-foreground">123 Security Blvd, Tech City</p>
+                <p className="text-foreground">Gurgaon , India</p>
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} CyberGuard Pro. All rights reserved.
+            © {currentYear} Security In Built. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">

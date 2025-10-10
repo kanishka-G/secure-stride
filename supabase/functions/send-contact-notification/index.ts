@@ -75,7 +75,7 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="background-color: #f3f4f6; padding: 15px; border-radius: 5px; text-align: center; margin-top: 30px;">
             <p style="margin: 0; color: #6b7280; font-size: 12px;">
               This email was automatically generated from the Security In Built website contact form.<br>
-              Tower 9, 307, Pyramid Urban Homes, Sector 70A, Gurgaon | +91 70658 74157
+              Gurgaon , India | +91 70658 74157
             </p>
           </div>
         </div>

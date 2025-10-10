@@ -96,9 +96,7 @@ const Tools = () => {
     "CISSP",
     "CEH",
     "CISA",
-    "ISO 27001",
-    "SOC 2",
-    "PCI DSS"
+    "SOC 2"
   ];
 
   return (
