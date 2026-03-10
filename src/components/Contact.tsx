@@ -3,7 +3,6 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { 
   Mail, 
   Phone, 
@@ -54,59 +53,47 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Existing Supabase function invocation (keeps current backend behavior)
-      const { data, error } = await supabase.functions.invoke('send-contact-notification', {
-        body: formData
+      // Submit only to Netlify Forms (no external DB)
+      const netlifyData: Record<string, string> = {
+        'form-name': 'contact',
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        company: formData.company,
+        'bot-field': ''
+      };
+
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode(netlifyData)
       });
 
-      if (error) {
-        console.error('Supabase function error:', error);
-      } else {
+      if (res.ok) {
         toast({
           title: 'Success!',
-          description: "Your cyber risk assessment request has been submitted. We'll contact you within 24 hours.",
+          description: "Your request was submitted. We'll contact you within 24 hours.",
           variant: 'default'
         });
-      }
 
-      // Also submit to Netlify Forms so submissions are visible in Netlify dashboard
-      try {
-        const netlifyData: Record<string, string> = {
-          'form-name': 'contact',
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          company: formData.company,
-          phone: formData.phone || '',
-          challenges: formData.challenges || '',
-          'bot-field': ''
-        };
-
-        const res = await fetch('/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: encode(netlifyData)
+        // Reset form fields
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          company: '',
+          phone: '',
+          challenges: ''
         });
-
-        if (!res.ok) {
-          console.error('Netlify form submission failed', res.statusText);
-        }
-      } catch (nfErr) {
-        console.error('Netlify submission error:', nfErr);
+      } else {
+        console.error('Netlify form submission failed', res.statusText);
+        toast({
+          title: 'Submission Failed',
+          description: 'There was an error submitting your request. Please try again or contact us directly.',
+          variant: 'destructive'
+        });
       }
-
-      // Reset form fields
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        company: '',
-        phone: '',
-        challenges: ''
-      });
-
     } catch (error: any) {
-      console.error('Form submission error:', error);
+      console.error('Netlify submission error:', error);
       toast({
         title: 'Submission Failed',
         description: 'There was an error submitting your request. Please try again or contact us directly.',

@@ -16,21 +16,25 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://cdn.corenexis.com/media?o6xvng&168H&p&b&2ziu.png" />
+    <script type="module" crossorigin src="/assets/index-DO_2msyz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BxyIUxs0.css">
   </head>
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Hidden Netlify form for build-time detection (minimal fields: name, email, company) -->
+    <!-- Hidden Netlify form for build-time detection -->
     <form name="contact" data-netlify="true" netlify-honeypot="bot-field" style="display:none">
       <input type="hidden" name="form-name" value="contact" />
       <p>
         <label>Don’t fill this out: <input name="bot-field" /></label>
       </p>
-      <p><input name="name" /></p>
+      <p><input name="firstName" /></p>
+      <p><input name="lastName" /></p>
       <p><input name="email" /></p>
       <p><input name="company" /></p>
+      <p><input name="phone" /></p>
+      <p><textarea name="challenges"></textarea></p>
     </form>
   </body>
 </html>
