@@ -178,7 +178,9 @@ const Contact = () => {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Use a plain container instead of a native <form> to avoid accidental native POSTs
+          All submissions are handled via the client-side fetch to the Netlify Function */}
+        <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -289,7 +291,7 @@ const Contact = () => {
                 <p className="text-xs text-muted-foreground text-center">
                   By submitting this form, you agree to our privacy policy and terms of service.
                 </p>
-              </form>
+              </div>
             </Card>
           </div>
 
