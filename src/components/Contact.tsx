@@ -175,22 +175,7 @@ const Contact = () => {
                 </p>
               </div>
 
-              <form
-                name="contact"
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                onSubmit={handleSubmit}
-                className="space-y-6"
-              >
-                {/* Hidden Netlify form-name for detection */}
-                <input type="hidden" name="form-name" value="contact" />
-                {/* Honeypot field for spam protection */}
-                <p style={{ display: 'none' }}>
-                  <label>
-                    Don’t fill this out: <input name="bot-field" />
-                  </label>
-                </p>
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
