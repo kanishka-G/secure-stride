@@ -56,9 +56,12 @@ const Contact = () => {
       // Submit only to Netlify Forms (no external DB)
       const netlifyData: Record<string, string> = {
         'form-name': 'contact',
-        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
         company: formData.company,
+        phone: formData.phone || '',
+        challenges: formData.challenges || '',
         'bot-field': ''
       };
 
@@ -195,9 +198,12 @@ const Contact = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      placeholder="John" 
-                      className="bg-background" 
-                      required 
+                        placeholder="John"
+                        className="bg-background"
+                        maxLength={50}
+                        pattern="[A-Za-z \-']+"
+                        title="First name should contain only letters, spaces, hyphens or apostrophes"
+                        required 
                     />
                   </div>
                   <div>
@@ -208,9 +214,12 @@ const Contact = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      placeholder="Doe" 
-                      className="bg-background" 
-                      required 
+                        placeholder="Doe"
+                        className="bg-background"
+                        maxLength={50}
+                        pattern="[A-Za-z \-']+"
+                        title="Last name should contain only letters, spaces, hyphens or apostrophes"
+                        required 
                     />
                   </div>
                 </div>
@@ -224,8 +233,8 @@ const Contact = () => {
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="john.doe@company.com" 
-                    className="bg-background" 
+                    placeholder="john.doe@company.com"
+                    className="bg-background"
                     required 
                   />
                 </div>
@@ -238,8 +247,9 @@ const Contact = () => {
                     name="company"
                     value={formData.company}
                     onChange={handleInputChange}
-                    placeholder="Your Company Inc." 
-                    className="bg-background" 
+                    placeholder="Your Company Inc."
+                    className="bg-background"
+                    maxLength={100}
                     required 
                   />
                 </div>
@@ -252,8 +262,12 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="+91 98765 43210" 
-                    className="bg-background" 
+                    placeholder="+919876543210"
+                    className="bg-background"
+                    inputMode="tel"
+                    pattern="\+?\d{7,15}"
+                    title="Phone number should contain 7 to 15 digits and may start with +"
+                    maxLength={16}
                   />
                 </div>
 
@@ -267,6 +281,7 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder="Tell us about your current security concerns, cloud infrastructure, compliance requirements, etc."
                     className="bg-background min-h-[120px]"
+                    maxLength={2000}
                   />
                 </div>
 
