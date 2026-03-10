@@ -65,10 +65,12 @@ const Contact = () => {
         'bot-field': ''
       };
 
-      const res = await fetch('/', {
+      // POST to Netlify Function which will write to Google Sheets
+      const functionUrl = '/.netlify/functions/submit-contact';
+      const res = await fetch(functionUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode(netlifyData)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(netlifyData)
       });
 
       if (res.ok) {
