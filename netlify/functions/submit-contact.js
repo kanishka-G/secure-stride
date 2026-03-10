@@ -5,13 +5,29 @@ const { google } = require('googleapis');
 // SHEETS_SERVICE_ACCOUNT_KEY -> the JSON service account key (stringified JSON)
 // SHEETS_SPREADSHEET_ID -> the target spreadsheet ID
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+};
+
 exports.handler = async function (event, context) {
+  // Handle CORS preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS_HEADERS, body: '' };
+  }
+
   try {
     if (event.httpMethod !== 'POST') {
-      return { statusCode: 405, body: 'Method Not Allowed' };
+      return { statusCode: 405, headers: CORS_HEADERS, body: 'Method Not Allowed' };
     }
 
-    const body = event.body ? JSON.parse(event.body) : {};
+    let body;
+    try {
+      body = event.body ? JSON.parse(event.body) : {};
+    } catch (err) {
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Invalid JSON body' }) };
+    }
 
     // Basic validation
     const firstName = body.firstName || '';
@@ -22,7 +38,7 @@ exports.handler = async function (event, context) {
     const challenges = body.challenges || '';
 
     if (!firstName || !lastName || !email || !company) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Missing required fields' }) };
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing required fields' }) };
     }
 
     const keyJson = process.env.SHEETS_SERVICE_ACCOUNT_KEY;
@@ -30,7 +46,7 @@ exports.handler = async function (event, context) {
 
     if (!keyJson || !spreadsheetId) {
       console.error('Missing SHEETS_SERVICE_ACCOUNT_KEY or SHEETS_SPREADSHEET_ID');
-      return { statusCode: 500, body: JSON.stringify({ error: 'Server misconfigured' }) };
+      return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Server misconfigured' }) };
     }
 
     const key = JSON.parse(keyJson);
@@ -62,9 +78,9 @@ exports.handler = async function (event, context) {
 
     // Optionally: send email or notifications here (SendGrid, Slack) using env vars
 
-    return { statusCode: 200, body: JSON.stringify({ status: 'ok' }) };
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: 'ok' }) };
   } catch (err) {
     console.error('submit-contact error', err);
-    return { statusCode: 500, body: JSON.stringify({ error: String(err) }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: String(err) }) };
   }
 };
