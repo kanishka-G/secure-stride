@@ -34,14 +34,19 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const encode = (data: Record<string, string>) =>
+    Object.keys(data)
+      .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent((data as any)[k]))
+      .join('&');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.company) {
       toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
+        title: 'Missing Information',
+        description: 'Please fill in all required fields.',
+        variant: 'destructive'
       });
       return;
     }
@@ -49,19 +54,48 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      // Existing Supabase function invocation (keeps current backend behavior)
       const { data, error } = await supabase.functions.invoke('send-contact-notification', {
         body: formData
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+      } else {
+        toast({
+          title: 'Success!',
+          description: "Your cyber risk assessment request has been submitted. We'll contact you within 24 hours.",
+          variant: 'default'
+        });
+      }
 
-      toast({
-        title: "Success!",
-        description: "Your cyber risk assessment request has been submitted. We'll contact you within 24 hours.",
-        variant: "default"
-      });
+      // Also submit to Netlify Forms so submissions are visible in Netlify dashboard
+      try {
+        const netlifyData: Record<string, string> = {
+          'form-name': 'contact',
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone || '',
+          challenges: formData.challenges || '',
+          'bot-field': ''
+        };
 
-      // Reset form
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encode(netlifyData)
+        });
+
+        if (!res.ok) {
+          console.error('Netlify form submission failed', res.statusText);
+        }
+      } catch (nfErr) {
+        console.error('Netlify submission error:', nfErr);
+      }
+
+      // Reset form fields
       setFormData({
         firstName: '',
         lastName: '',
@@ -74,9 +108,9 @@ const Contact = () => {
     } catch (error: any) {
       console.error('Form submission error:', error);
       toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your request. Please try again or contact us directly.",
-        variant: "destructive"
+        title: 'Submission Failed',
+        description: 'There was an error submitting your request. Please try again or contact us directly.',
+        variant: 'destructive'
       });
     } finally {
       setIsSubmitting(false);
@@ -149,7 +183,22 @@ const Contact = () => {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+                className="space-y-6"
+              >
+                {/* Hidden Netlify form-name for detection */}
+                <input type="hidden" name="form-name" value="contact" />
+                {/* Honeypot field for spam protection */}
+                <p style={{ display: 'none' }}>
+                  <label>
+                    Don’t fill this out: <input name="bot-field" />
+                  </label>
+                </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">

@@ -36,12 +36,12 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
-            <Button variant="default" className="shadow-glow"
-            onClick={() => {
-                const contactSection = document.getElementById("contact");
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: "smooth" });
-                }
+            <Button
+              variant="default"
+              className="shadow-glow"
+              onClick={() => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               Get Free Assessment
@@ -73,13 +73,13 @@ const Navigation = () => {
                   {item.name}
                 </a>
               ))}
-              <Button variant="default" className="w-full shadow-glow"
-              onClick={() => {
-                const contactSection = document.getElementById("contact");
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
+              <Button
+                variant="default"
+                className="w-full shadow-glow"
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 Get Free Assessment
               </Button>
