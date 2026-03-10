@@ -275,11 +275,12 @@ const Contact = () => {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full shadow-glow group" 
+                <Button
+                  type="button"
+                  size="lg"
+                  className="w-full shadow-glow group"
                   disabled={isSubmitting}
+                  onClick={handleSubmit}
                 >
                   {isSubmitting ? 'Submitting...' : 'Schedule Free Assessment'}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
