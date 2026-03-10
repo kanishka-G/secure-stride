@@ -66,7 +66,9 @@ const Contact = () => {
       };
 
       // POST to Netlify Function which will write to Google Sheets
-      const functionUrl = '/.netlify/functions/submit-contact';
+      // Use absolute URL to avoid relative-path resolution or routing/caching issues
+      const functionUrl = 'https://securityinbuilt.netlify.app/.netlify/functions/submit-contact';
+      console.log('Submitting to function URL:', functionUrl, 'payload:', netlifyData);
       const res = await fetch(functionUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -90,7 +92,8 @@ const Contact = () => {
           challenges: ''
         });
       } else {
-        console.error('Netlify form submission failed', res.statusText);
+        const text = await res.text().catch(() => '');
+        console.error('Netlify form submission failed', res.status, res.statusText, text);
         toast({
           title: 'Submission Failed',
           description: 'There was an error submitting your request. Please try again or contact us directly.',
